@@ -1,4 +1,5 @@
 # CCWatcher
+Network Sniffer Tool, to find unencrypted Credit Card data.
 
 #Download
 git clone https://github.com/mthbernardes/CCWatcher.git
