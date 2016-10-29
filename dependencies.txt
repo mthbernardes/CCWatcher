@@ -4,3 +4,4 @@ pypcap
 argparse
 colorama
 requests
+termcolor
