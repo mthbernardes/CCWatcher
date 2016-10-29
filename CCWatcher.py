@@ -27,13 +27,14 @@ def arguments():
 def save_cc(results):
     for result in results:
         f = open(args.output,'a')
+        f.write('Credit Card number: '+result+'\n')
         url = 'https://binlist.net/json/%s' % result
         r = requests.get(url)
-        if status_code == 200:
-            for key,value in r.json().items():
-                msg = '%s\t\t\t%s\n' % (key,value)
-                f.write(msg)
-            f.close()
+        for key,value in r.json().items():
+            msg = '%s\t\t\t%s\n' % (key,value)
+            f.write(msg)
+        f.write('-'*50+'\n')
+        f.close()
 
 def regex_gen():
     if args.regex:
@@ -62,10 +63,9 @@ def monitor(pkt):
     if data:
         cc = verify(data)
         if cc:
-            #print
-            logger.info(colored('Credit Cards Numbers\n%s', 'white', 'on_green') % ' | '.join(cc))
-            logger.info("%s:%s============>%s:%s" % (pkt[IP].src,pkt[IP].sport,pkt[IP].dst,pkt[IP].dport))
-            logger.info(data)
+            logger.info(colored('\nCredit Cards Numbers\n%s', 'white', 'on_green') % ' | '.join(cc))
+            logger.info("\n%s:%s============>%s:%s" % (pkt[IP].src,pkt[IP].sport,pkt[IP].dst,pkt[IP].dport))
+            logger.info("\n"+data)
 
 args = arguments()
 
