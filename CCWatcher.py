@@ -27,25 +27,22 @@ def regex_gen():
 
 def verify(data):
     for cc,pattern in patterns.items():
-            if re.findall(pattern.strip(),data,re.MULTILINE):
-                return cc
-
+        result = re.findall(pattern.strip(),data,re.MULTILINE)
+        if len(result) > 0:
+            return result
 def monitor(pkt):
     data = str()
-    if 'TCP' in pkt and pkt[TCP].payload:
-        data = str(pkt[TCP].payload)
+    if 'TCP' in pkt and pkt[TCP].payload:data = str(pkt[TCP].payload)
 
-    elif pkt.getlayer(Raw):
-        data = pkt.getlayer(Raw).load
+    elif pkt.getlayer(Raw):data = pkt.getlayer(Raw).load
 
     if data:
         cc = verify(data)
         if cc:
-            print colored('[ %s Credit card Found! ]', 'white', 'on_green') % cc
+            print colored('Credit Cards Numbers\n%s', 'white', 'on_green') % ' | '.join(cc)
             print "%s:%s============>%s:%s" % (pkt[IP].src,pkt[IP].sport,pkt[IP].dst,pkt[IP].dport)
             print data
 
 args = arguments()
 patterns = regex_gen()
 sniff(prn=monitor,iface=args.iface,filter=args.filter,count=0)
-
