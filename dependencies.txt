@@ -2,3 +2,5 @@ scapy
 pcapy
 pypcap
 argparse
+colorama
+requests
